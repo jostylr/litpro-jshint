@@ -64,7 +64,7 @@ hints it. The first argument, if present, is a JSON object of options. The
         var doc = this;
         var options, globals;
 
-        var block = {}, log = [], err, i, lines, line,
+        var log = [], err, i, lines, line,
             plug, globhash;
 
         _":options"
@@ -137,7 +137,6 @@ I am not sure where that gets put so ignoring it.
 [generating the logs]()
 
 
-    block.jshint = {data:data, errors: [], implieds :[], unused :[]};
     lines = input.split("\n");
     for (i = 0; i < jshint.errors.length; i += 1) {
        err = jshint.errors[i];
@@ -149,16 +148,12 @@ I am not sure where that gets put so ignoring it.
        }
        log.push("E "+ err.line+","+err.character+": "+err.reason +
             "  "+ line.trim());
-        block.jshint.errors.push({"line#": err.line, character: err.character, 
-            reason: err.reason, line: lines[err.line-1]} );
     }
     if (data.hasOwnProperty("implieds") ) {
         for (i = 0; i < data.implieds.length; i += 1) {
             err = data.implieds[i];
             log.push("Implied Gobal "+ err.line+": "+err.name +
                 "  "+ lines[err.line[0]-1].trim());
-            block.jshint.implieds.push({"line#": err.line, 
-                name:err.name, line: lines[err.line[0]-1]} );
      }            
     }
     if (data.hasOwnProperty("unused") ) {
@@ -166,8 +161,6 @@ I am not sure where that gets put so ignoring it.
             err = data.unused[i];
             log.push("Unused "+ err.line+": "+err.name +
             "  "+ lines[err.line-1].trim());
-            block.jshint.unused.push({"line#": err.line, name:err.name, 
-                line: lines[err.line-1]} );
      }            
     }
 
