@@ -1,4 +1,4 @@
-# [litpro-jshint](# "version: 0.1.0")
+# [litpro-jshint](# "version: 0.1.0 ; jshint for literate-programming")
 
 This implements the jshint command.
 
@@ -23,7 +23,7 @@ This is designed to work with the 1.0 version of literate-programming.
 * [.npmignore](#npmignore "save: ")
 * [.gitignore](#gitignore "save: ")
 * [.travis.yml](#travis "save: ")
-
+* [test.js](#test "save:") 
 
 ## JSHint
 
@@ -181,7 +181,7 @@ used.
 
 
     function (args) {
-
+        
     }
 
     
@@ -204,6 +204,32 @@ project.md as the file of choice and to build it in the top directory.
 
     }
 
+## Test 
+
+
+    var test = require('tape');
+    var cp = require('child_process');
+    var fs = require('fs');
+
+    test('first', function (t) {
+        t.plan(1);
+
+        var expected = fs.readFileSync('tests/first.txt', {encoding:'utf8'});
+   
+        cp.exec('cd tests; node ../node_modules/.bin/litpro first.md', 
+            function (err, stdout, stderr) {
+                var actual = stdout.split("\n").slice(1,18).join("\n").trim();
+
+                t.equals(actual, expected.trim());
+            }
+        );
+
+
+
+    });
+
+
+
 ## Readme
 
 This is the readme for the plugin.  
@@ -220,7 +246,7 @@ This should setup the npm file
 
     {
       "name": "_`g::docname`",
-      "description": "A literate programming compile script. Write your program in markdown.",
+      "description": "_`g::tagline`"
       "version": "_`g::docversion`",
       "homepage": "https://github.com/_`g::gituser`/_`g::docname`",
       "author": {
@@ -261,6 +287,7 @@ This should setup the npm file
 Stuff not to include in git. Don't check in your modules.
 
     node_modules
+    .checksum
 
     
 
@@ -293,7 +320,9 @@ You write tests, right?
 
 ## Todo
 
-Whatever you need to do. 
+Need to figure out how to get the unused variables to behave the way I want. I
+want unused parameters to be ignored if there is a variable after it. Not sure
+why unused is not working for me. 
 
 ---
 [on](# "block:")
@@ -326,5 +355,6 @@ Whatever you need to do.
 [James Taylor](https://github.com/jostylr "npminfo: jostylr@gmail.com ; 
     deps: jshint 2.6.3, merge 1.2.0  ; 
     dev: literate-programming-cli 0.7.0, tape 3.5.0 ")
+
 
 

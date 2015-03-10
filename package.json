@@ -1,6 +1,6 @@
 {
   "name": "litpro-jshint",
-  "description": "A literate programming compile script. Write your program in markdown.",
+  "description": "jshint for literate-programming"
   "version": "0.1.0",
   "homepage": "https://github.com/jostylr/litpro-jshint",
   "author": {
