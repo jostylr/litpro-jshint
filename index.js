@@ -9,17 +9,25 @@ module.exports = function(Folder, args) {
         var options, globals;
     
         var log = [], err, i, lines, line,
-            plug, globhash;
+            plug, globhash, file, ind, shortname;
     
-        if (args[1]) {
-            globals = args[1].split(";");
+        options = args[0] || {};
+        
+        globals = args[1] || [];
+        
+        if (args[2]) {
+           file = '';
+           shortname = args[2];
         } else {
-            globals = [];
+            ind = name.indexOf(":")
+            file = name.slice(0, ind);
+            shortname = name.slice(ind +1, 
+                name.indexOf(doc.colon.v, ind) );
         }
         
         if ( (plug = doc.plugins.jshint) ) {
             if (plug.options) {
-                options = merge(true, plug.options, options);
+                options = merge(true, {unused:true}, plug.options, options);
             }
             if (plug.globals) {
                 globals = globals.concat(plug.globals);
@@ -70,13 +78,16 @@ module.exports = function(Folder, args) {
         }
     
         if (log.length > 0 ) {
-            doc.log ("!! JSHint:" + name+"\n"+log.join("\n"));
+            doc.log ("!! JSHint:" + shortname+"\n"+log.join("\n"));
         } else {
-            doc.log("JSHint CLEAN: " + name);
+            doc.log("JSHint CLEAN: " + shortname);
         }
     
         return input;
     };
 
-    Folder.sync("jshint", jshintcmd );
+    var f = Folder.sync("jshint", jshintcmd );
+   
+    
+
 };

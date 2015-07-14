@@ -1,4 +1,4 @@
-# [litpro-jshint](# "version: 0.1.0 ; jshint for literate-programming")
+# [litpro-jshint](# "version: 0.2.0 ; jshint for literate-programming")
 
 This implements the jshint command.
 
@@ -15,7 +15,7 @@ This is designed to work with the 1.0 version of literate-programming.
   thin layer on top of the command line module and putting in various litpro
   plugins. 
 * [README.md](#readme "save: ") The standard README.
-* [lprc.js](#lprc "save:| jshint") This contains the options of how to compile
+* [lprc.js](#lprc "save:") This contains the options of how to compile
   this using the new version. Not currently used. 
 * [package.json](#npm-package "save: | jshint") The requisite package file for a npm project. 
 * [TODO.md](#todo "save: | raw ## Todo, ---") A list of growing and shrinking items todo.
@@ -25,15 +25,6 @@ This is designed to work with the 1.0 version of literate-programming.
 * [.travis.yml](#travis "save: ")
 * [test.js](#test "save:") 
 
-## JSHint
-
-Just a stub for now. 
-
-    function (input) {
-        return input;
-    }
-
-[jshint](# "define:")
 
 
 ## Index
@@ -48,11 +39,13 @@ jshint which loads options and globals.
         
         var jshintcmd = _"jshint command";
 
-        Folder.sync("jshint", jshintcmd );
-
-`Folder.directives.jshint = _"jshint options" `
+        var f = Folder.sync("jshint", jshintcmd );
+       
+        
 
     };
+
+
 
 ### jshint command
 
@@ -65,7 +58,7 @@ hints it. The first argument, if present, is a JSON object of options. The
         var options, globals;
 
         var log = [], err, i, lines, line,
-            plug, globhash;
+            plug, globhash, file, ind, shortname;
 
         _":options"
 
@@ -82,38 +75,43 @@ hints it. The first argument, if present, is a JSON object of options. The
         return input;
     }
 
+
+
 [report logs]()
 
     if (log.length > 0 ) {
-        doc.log ("!! JSHint:" + name+"\n"+log.join("\n"));
+        doc.log ("!! JSHint:" + shortname+"\n"+log.join("\n"));
     } else {
-        doc.log("JSHint CLEAN: " + name);
+        doc.log("JSHint CLEAN: " + shortname);
     }
 
 [options]() 
 
 We can get options from the plugins.jshint object as well as from the
-arguments. 
+arguments. We are opinionated in setting unused to true. 
 
 Globals are ultimately an object that has a bunch of true/false properties. If
 true, then they can be written too. There is also some blacklist property, but
 I am not sure where that gets put so ignoring it. 
 
-   try {
-      options = JSON.parse(args[0].trim());
-    } catch (e) {
-        options = {};
-    }
 
-    if (args[1]) {
-        globals = args[1].split(";");
+    options = args[0] || {};
+
+    globals = args[1] || [];
+
+    if (args[2]) {
+       file = '';
+       shortname = args[2];
     } else {
-        globals = [];
+        ind = name.indexOf(":")
+        file = name.slice(0, ind);
+        shortname = name.slice(ind +1, 
+            name.indexOf(doc.colon.v, ind) );
     }
 
     if ( (plug = doc.plugins.jshint) ) {
         if (plug.options) {
-            options = merge(true, plug.options, options);
+            options = merge(true, {unused:true}, plug.options, options);
         }
         if (plug.globals) {
             globals = globals.concat(plug.globals);
@@ -165,17 +163,6 @@ I am not sure where that gets put so ignoring it.
     }
 
 
-### jshint options
-
-This expects to read the options in the block where this is. You can use pipes
-to have some easier format that gets parsed into JSON, but ultimately, it
-should produce a JSON object that will be passed into JSHINT every time it is
-used. 
-
-
-    function (args) {
-        
-    }
 
     
 
@@ -184,9 +171,13 @@ used.
 This creates the lprc file for the plugin. Basically, it just says to run
 project.md as the file of choice and to build it in the top directory.
 
+    var jshint = require('jshint').JSHINT;
 
     module.exports = function(Folder, args) {
 
+        var jshintcmd = _"jshint command";
+
+        Folder.sync("jshint", jshintcmd );
 
         if (args.file.length === 0) {
             args.file = ["project.md"];
@@ -200,38 +191,42 @@ project.md as the file of choice and to build it in the top directory.
 ## Test 
 
 
-    var test = require('tape');
-    var cp = require('child_process');
-    var fs = require('fs');
+    /*global require */
 
-    test('first', function (t) {
-        t.plan(1);
+    var tests = require('literate-programming-cli-test')(); //true, "hideConsole");
 
-        var expected = fs.readFileSync('tests/first.txt', {encoding:'utf8'});
-   
-        cp.exec('cd tests; node ../node_modules/.bin/litpro first.md', 
-            function (err, stdout, stderr) {
-                var actual = stdout.split("\n").slice(1,18).join("\n").trim();
-
-                t.equals(actual, expected.trim());
-            }
-        );
-
-
-
-    });
-
+    tests.apply(null, [ 
+        ["*first" ]
+        ].slice(0)
+    ); 
 
 
 ## Readme
 
 This is the readme for the plugin.  
 
-    # Stuff
+    # JSHint
 
-    This is a plugin for [literate-programming](https://github.com/jostylr/literate-programming). Install that and then you can use this by requiring it in the lprc.js file. 
+    This is a plugin for [litpro](https://github.com/jostylr/literate-programming). Install that and then you can use this by requiring it in the lprc.js file. 
+    
+    It is automatically included in [literate-programming](https://github.com/jostylr/literate-programming). 
 
+    This plugin provides a single command: `jshint`.  It takes three
+    arguments:  options, globals, name
 
+    Options should be an object containing [configuration options for
+    JSHint](http://jshint.com/docs/options/). This can be conveniently created
+    as an argument using the kv subcommand: `| jshint kv(unused, true() ) `
+
+    The second argument is an array for globals. Just write them out. If you
+    want to be able to write to them without a warning, use `:true` after the
+    name. So for example `jshint , arr($, console, require, state:true)`
+    would set those variables as globals and allow module to be written to. 
+
+    The third argument is a name to be written associated with it. The default
+    is roughly of the form `BLOCK: ... FILE: ...`
+
+    
 ## npm package
 
 This should setup the npm file 
@@ -239,7 +234,7 @@ This should setup the npm file
 
     {
       "name": "_`g::docname`",
-      "description": "_`g::tagline`"
+      "description": "_`g::tagline`",
       "version": "_`g::docversion`",
       "homepage": "https://github.com/_`g::gituser`/_`g::docname`",
       "author": {
@@ -253,12 +248,7 @@ This should setup the npm file
       "bugs": {
         "url": "https://github.com/_`g::gituser`/_`g::docname`/issues"
       },
-      "licenses": [
-        {
-          "type": "MIT",
-          "url": "https://github.com/_`g::gituser`/_`g::docname`/blob/master/LICENSE-MIT"
-        }
-      ],
+      "license": "MIT",
       "main": "index.js",
       "engines": {
         "node": ">=0.10"
@@ -270,7 +260,7 @@ This should setup the npm file
         _"g::npm dev dependencies"
       },
       "scripts" : { 
-        "test" : "node ./test/test.js"
+        "test" : "node ./test.js"
       },
       "keywords": ["literate programming plugin"]
     }
@@ -281,6 +271,7 @@ Stuff not to include in git. Don't check in your modules.
 
     node_modules
     .checksum
+    /tests/*/
 
     
 
@@ -346,8 +337,8 @@ why unused is not working for me.
 
 
 [James Taylor](https://github.com/jostylr "npminfo: jostylr@gmail.com ; 
-    deps: jshint 2.6.3, merge 1.2.0  ; 
-    dev: literate-programming-cli 0.7.0, tape 3.5.0 ")
+    deps: jshint 2.8.0, merge 1.2.0  ; 
+    dev: litpro 0.9.3, literate-programming-cli-test 0.5.1")
 
 
 

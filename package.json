@@ -1,7 +1,7 @@
 {
   "name": "litpro-jshint",
-  "description": "jshint for literate-programming"
-  "version": "0.1.0",
+  "description": "jshint for literate-programming",
+  "version": "0.2.0",
   "homepage": "https://github.com/jostylr/litpro-jshint",
   "author": {
     "name": "James Taylor",
@@ -14,26 +14,21 @@
   "bugs": {
     "url": "https://github.com/jostylr/litpro-jshint/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/jostylr/litpro-jshint/blob/master/LICENSE-MIT"
-    }
-  ],
+  "license": "MIT",
   "main": "index.js",
   "engines": {
     "node": ">=0.10"
   },
   "dependencies":{
-    "jshint" : "^2.6.3",
+    "jshint" : "^2.8.0",
     "merge" : "^1.2.0"
   },
   "devDependencies" : {
-    "literate-programming-cli" : "^0.7.0",
-    "tape" : "^3.5.0"
+    "litpro" : "^0.9.3",
+    "literate-programming-cli-test" : "^0.5.1"
   },
   "scripts" : { 
-    "test" : "node ./test/test.js"
+    "test" : "node ./test.js"
   },
   "keywords": ["literate programming plugin"]
 }
