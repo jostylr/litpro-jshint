@@ -1,4 +1,4 @@
-# [litpro-jshint](# "version: 0.2.0 ; jshint for literate-programming")
+# [litpro-jshint](# "version: 0.2.1 ; jshint for literate-programming")
 
 This implements the jshint command.
 
@@ -32,14 +32,15 @@ This is designed to work with the 1.0 version of literate-programming.
 This is the module entry point. It adds the commands jshint and the directive
 jshint which loads options and globals.
 
+    /*jshint node:true*/
     var jshint = require('jshint').JSHINT;
     var merge = require('merge');
 
-    module.exports = function(Folder, args) {
+    module.exports = function(Folder) {
         
         var jshintcmd = _"jshint command";
 
-        var f = Folder.sync("jshint", jshintcmd );
+        Folder.sync("jshint", jshintcmd );
        
         
 
@@ -103,15 +104,17 @@ I am not sure where that gets put so ignoring it.
        file = '';
        shortname = args[2];
     } else {
-        ind = name.indexOf(":")
+        ind = name.indexOf(":");
         file = name.slice(0, ind);
         shortname = name.slice(ind +1, 
             name.indexOf(doc.colon.v, ind) );
     }
 
+    options = merge(true, {unused:true}, options);
+
     if ( (plug = doc.plugins.jshint) ) {
         if (plug.options) {
-            options = merge(true, {unused:true}, plug.options, options);
+            options = merge(true, plug.options, options);
         }
         if (plug.globals) {
             globals = globals.concat(plug.globals);
@@ -139,6 +142,9 @@ I am not sure where that gets put so ignoring it.
     for (i = 0; i < jshint.errors.length; i += 1) {
        err = jshint.errors[i];
        if (!err) {continue;}
+       if (err.reason.indexOf("is defined but never used.") !== -1) {
+           continue; //this is covered elsewhere. 
+       }
        line = lines[err.line-1];
        if (line.trim().length < 4) {
             line = "\n---\n" + lines.slice(err.line-2, err.line+1).join("\n") + 
@@ -172,6 +178,7 @@ This creates the lprc file for the plugin. Basically, it just says to run
 project.md as the file of choice and to build it in the top directory.
 
     var jshint = require('jshint').JSHINT;
+    var merge = require('merge');
 
     module.exports = function(Folder, args) {
 
@@ -186,14 +193,14 @@ project.md as the file of choice and to build it in the top directory.
         args.src = ".";
 
 
-    }
+    };
 
 ## Test 
 
 
     /*global require */
 
-    var tests = require('literate-programming-cli-test')(); //true, "hideConsole");
+    var tests = require('literate-programming-cli-test')(true, "hideConsole");
 
     tests.apply(null, [ 
         ["*first" ]

@@ -88,8 +88,6 @@ E 11,6: Missing semicolon.  ---
 ---
 E 13,5: Read only.  jane = 3;
 E 14,5: Read only.  john = kit;
-E 1,5: 'great' is defined but never used.  var great = 4;
-E 8,27: 'args' is defined but never used.  jill.says = function (args, data) {
 Implied Gobal 3,5,7,9: jack  jack = 4;
 Unused 1: great  var great = 4;
 Unused 8: args  jill.says = function (args, data) {
@@ -105,7 +103,6 @@ E 11,6: Missing semicolon.  ---
     jill = 5;
 ---
 E 18,1: eval can be harmful.  eval("hay");
-E 1,5: 'great' is defined but never used.  var great = 4;
 Implied Gobal 3,5,7,9: jack  jack = 4;
 Implied Gobal 13: jane  jane = 3;
 Implied Gobal 14,15: john  john = kit;

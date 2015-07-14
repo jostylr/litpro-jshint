@@ -1,7 +1,7 @@
 {
   "name": "litpro-jshint",
   "description": "jshint for literate-programming",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/jostylr/litpro-jshint",
   "author": {
     "name": "James Taylor",

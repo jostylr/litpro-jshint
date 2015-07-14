@@ -1,4 +1,5 @@
 var jshint = require('jshint').JSHINT;
+var merge = require('merge');
 
 module.exports = function(Folder, args) {
 
@@ -18,15 +19,17 @@ module.exports = function(Folder, args) {
            file = '';
            shortname = args[2];
         } else {
-            ind = name.indexOf(":")
+            ind = name.indexOf(":");
             file = name.slice(0, ind);
             shortname = name.slice(ind +1, 
                 name.indexOf(doc.colon.v, ind) );
         }
         
+        options = merge(true, {unused:true}, options);
+        
         if ( (plug = doc.plugins.jshint) ) {
             if (plug.options) {
-                options = merge(true, {unused:true}, plug.options, options);
+                options = merge(true, plug.options, options);
             }
             if (plug.globals) {
                 globals = globals.concat(plug.globals);
@@ -53,6 +56,9 @@ module.exports = function(Folder, args) {
         for (i = 0; i < jshint.errors.length; i += 1) {
            err = jshint.errors[i];
            if (!err) {continue;}
+           if (err.reason.indexOf("is defined but never used.") !== -1) {
+               continue; //this is covered elsewhere. 
+           }
            line = lines[err.line-1];
            if (line.trim().length < 4) {
                 line = "\n---\n" + lines.slice(err.line-2, err.line+1).join("\n") + 
@@ -94,4 +100,4 @@ module.exports = function(Folder, args) {
     args.src = ".";
 
 
-}
+};
