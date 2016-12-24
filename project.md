@@ -1,4 +1,4 @@
-# [litpro-jshint](# "version: 0.3.0 ; jshint for literate-programming")
+# [litpro-jshint](# "version: 0.3.1 ; jshint for literate-programming")
 
 This implements the jshint command.
 
@@ -302,9 +302,7 @@ You write tests, right?
 
     language: node_js
     node_js:
-      - "0.10"
-      - "iojs"
-      - "0.12"
+      - "node"
     
 
 [off](# "block:")
