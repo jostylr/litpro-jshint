@@ -289,10 +289,12 @@ Despite the `*.md`, your readme file will be seen.
 
     tests
     test.js
-    travis.yml
+    .travis.yml
     ghpages
     node_modules
     *.md
+    lprc.js
+    .checksum
     
 
 ## Travis
