@@ -24,7 +24,7 @@ This is just a simple example.
 
     console.log("yoo");
 
-[first.js](# "save: | jshint kv(evil, t(), unused, strict ), 
+[first.js](# "save: | jshint kv(evil, true(), unused, strict ), 
     arr(jane, john, kit:true) ")
 
 [](# ":| jshint , , plain")
@@ -75,9 +75,11 @@ eval("hay");
 console.log("yoo");
 
 ---=out.test
-!! JSHint:first.md:first.js
+# DOC: first.md
+## 0
+* !! JSHint:first.md:first.js
 E 5,10: Missing semicolon.  jack += 7
-E 7,17: Expected a conditional expression and instead saw an assignment.  while ( jack = 8) {
+E 7,14: Expected a conditional expression and instead saw an assignment.  while ( jack = 8) {
 E 9,17: Expected an assignment or function call and instead saw an expression.  "bad" + jack;
 E 10,9: Expected an assignment or function call and instead saw an expression.  data;
 E 11,6: Missing semicolon.  ---
@@ -90,9 +92,10 @@ E 14,5: Read only.  john = kit;
 Implied Gobal 3,5,7,9: jack  jack = 4;
 Unused 8: args  jill.says = function (args, data) {
 Unused 1: great  var great = 4;
-!! JSHint:plain
+* * *
+* !! JSHint:plain
 E 5,10: Missing semicolon.  jack += 7
-E 7,17: Expected a conditional expression and instead saw an assignment.  while ( jack = 8) {
+E 7,14: Expected a conditional expression and instead saw an assignment.  while ( jack = 8) {
 E 9,17: Expected an assignment or function call and instead saw an expression.  "bad" + jack;
 E 10,9: Expected an assignment or function call and instead saw an expression.  data;
 E 11,6: Missing semicolon.  ---
@@ -106,5 +109,8 @@ Implied Gobal 13: jane  jane = 3;
 Implied Gobal 14,15: john  john = kit;
 Implied Gobal 14,15: kit  john = kit;
 Unused 1: great  var great = 4;
-SAVED: ./build/first.js
-DONE: ./build
+# FOLDER LOGS
+## SAVED
+./build/first.js
+## DONE
+./build

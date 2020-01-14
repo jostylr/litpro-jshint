@@ -1,4 +1,4 @@
-# [litpro-jshint](# "version: 0.3.1 ; jshint for literate-programming")
+# [litpro-jshint](# "version: 0.4.0 ; jshint for literate-programming")
 
 This implements the jshint command.
 
@@ -342,8 +342,8 @@ why unused is not working for me.
 
 
 [James Taylor](https://github.com/jostylr "npminfo: jostylr@gmail.com ; 
-    deps: jshint 2.9.4, merge 1.2.0  ; 
-    dev: litpro 0.12.1, literate-programming-cli-test 0.5.1")
+    deps: jshint 2.11.0, merge 1.2.1  ; 
+    dev: litpro 2.0.0, literate-programming-cli-test 0.5.1")
 
 
 

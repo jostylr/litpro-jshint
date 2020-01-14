@@ -1,7 +1,7 @@
 {
   "name": "litpro-jshint",
   "description": "jshint for literate-programming",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "homepage": "https://github.com/jostylr/litpro-jshint",
   "author": {
     "name": "James Taylor",
@@ -19,16 +19,18 @@
   "engines": {
     "node": ">=0.10"
   },
-  "dependencies":{
-    "jshint" : "^2.9.4",
-    "merge" : "^1.2.0"
+  "dependencies": {
+    "jshint": "^2.11.0",
+    "merge": "^1.2.1"
   },
-  "devDependencies" : {
-    "litpro" : "^0.12.1",
-    "literate-programming-cli-test" : "^0.5.1"
+  "devDependencies": {
+    "litpro": "^2.0.0",
+    "literate-programming-cli-test": "^0.5.1"
   },
-  "scripts" : { 
-    "test" : "node ./test.js"
+  "scripts": {
+    "test": "node ./test.js"
   },
-  "keywords": ["literate programming plugin"]
+  "keywords": [
+    "literate programming plugin"
+  ]
 }
